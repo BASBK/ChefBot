@@ -14,7 +14,8 @@ def get_deliveries(type):
     result = []
     r = requests.get(config.baseURL + 'deliveries', params={'dtype': type})
     for row in r.json():
-        result.append(row['name'])
+        result.append(row)
+    print(result)
     return result
 
 
@@ -28,7 +29,13 @@ def get_menu():
     return r.json()
 
 
-def upload_photo_id(menu_name, photo_id):
-    param = {'photo_id' : photo_id}
-    r = requests.put(config.baseURL + 'menu/' + menu_name, params=param)
+def upload_menu_photo_id(menu_name, photo_id):
+    param = {'photo_id': photo_id}
+    r = requests.put(config.baseURL + 'menu/' + menu_name + '/photo', params=param)
+    return r
+
+
+def upload_delivery_photo_id(d_name, photo_id):
+    param = {'photo_id': photo_id}
+    r = requests.put(config.baseURL + 'deliveries/' + d_name + '/photo', params=param)
     return r

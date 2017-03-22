@@ -1,11 +1,14 @@
 from telebot import types
 import api
+import config
 
 
 def category_menu():
+    config.categories = []
     user_markup = types.ReplyKeyboardMarkup(True, False)
     for row in api.get_categories():
         user_markup.add(row)
+        config.categories.append(row)
     return user_markup
 
 
