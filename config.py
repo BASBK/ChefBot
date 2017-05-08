@@ -1,2 +1,4 @@
 token = '352896515:AAHoKqDa1ansmx_od3VMH-YXkdwPv8gQzY8'
-baseURL = 'http://127.0.0.1:5000/api/'
+# baseURL = 'https://chef-bot-server.herokuapp.com/api/'
+baseURL = 'http://batnet-host.ddns.net:5000/api/'
+baseImgURL = 'http://batnet-host.ddns.net:5000/'

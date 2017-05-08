@@ -1,6 +1,8 @@
 import requests
 import config
 import json
+from models import *
+
 
 def get_categories():
     result = []
@@ -12,7 +14,7 @@ def get_categories():
 
 def get_deliveries(type):
     result = []
-    r = requests.get(config.baseURL + 'deliveries', params={'dtype': type})
+    r = requests.get(config.baseURL + 'deliveries/' + type)
     for row in r.json():
         result.append(row)
     return result
@@ -40,11 +42,38 @@ def upload_delivery_photo_id(d_name, photo_id):
     return r
 
 
-def add_to_basket(client, delivery, menu_name, count):
+def add_to_cart(client, delivery, menu_name):
     data = {}
     data['delivery'] = delivery
     data['menu_name'] = menu_name
-    data['count'] = count
     jdata = json.dumps(data, ensure_ascii=False)
-    r = requests.post(config.baseURL + 'basket/' + str(client), json=jdata)
+    r = requests.post(config.baseURL + 'cart/' + client, json=jdata)
+    return r.json()['count']
+
+
+def get_cart(client):
+    r = requests.get(config.baseURL + 'cart/' + client)
+    return r.json()
+
+
+def get_address(long, lat):
+    url = 'https://geocode-maps.yandex.ru/1.x/?geocode={0},{1}&format=json&results=1'
+    r = requests.get(url.format(long, lat))
+    return r.json()['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['name']
+
+
+def post_address(chatID, client):
+    data = {}
+    data['username'] = client
+    data['longitude'] = User[chatID].longitude
+    data['latitude'] = User[chatID].latitude
+    data['additional_info'] = User[chatID].address_info
+    jdata = json.dumps(data, ensure_ascii=False)
+    print(jdata)
+    r = requests.post(config.baseURL + 'clients', json=jdata)
     return r
+
+
+def proceed_checkout(client):
+    r = requests.post(config.baseURL + 'orders/' + client)
+    return r.json()['order_number']

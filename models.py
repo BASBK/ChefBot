@@ -6,6 +6,9 @@ db = Database()
 class User(db.Entity):
     chatID = PrimaryKey(int)
     state = Required(str)
+    longitude = Optional(float)
+    latitude = Optional(float)
+    address_info = Optional(str)
 
 
 db.bind('sqlite', 'users.db', create_db=True)
