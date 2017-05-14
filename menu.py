@@ -4,11 +4,9 @@ import config
 
 
 def category_menu():
-    config.categories = []
     user_markup = types.ReplyKeyboardMarkup(True, False)
     for row in api.get_categories():
         user_markup.add(row)
-        config.categories.append(row)
     return user_markup
 
 
@@ -24,6 +22,18 @@ def buy_menu():
     return user_inline
 
 
+def cook_menu():
+    user_inline = types.InlineKeyboardMarkup()
+    user_inline.add(types.InlineKeyboardButton('☑️Готово', callback_data='cooking_done'))
+    return user_inline
+
+
+def cook_done_menu():
+    user_inline = types.InlineKeyboardMarkup()
+    user_inline.add(types.InlineKeyboardButton('✅Готово', callback_data='cooking_done_pressed'))
+    return user_inline
+
+
 def goto_cart_menu():
     user_markup = types.ReplyKeyboardMarkup(True, False)
     user_markup.add('Корзина')
@@ -34,6 +44,13 @@ def cart_menu():
     user_markup = types.ReplyKeyboardMarkup(True, False)
     user_markup.add('Оформить заказ', 'Добавить ещё еды!')
     user_markup.add('Очистить корзину')
+    user_markup.add('На главную')
+    return user_markup
+
+
+def goto_home_menu():
+    user_markup = types.ReplyKeyboardMarkup(True, False)
+    user_markup.add('На главную')
     return user_markup
 
 
@@ -46,7 +63,8 @@ def send_location_menu():
 
 def address_confirm_menu():
     user_markup = types.ReplyKeyboardMarkup(True, False)
-    user_markup.add('Всё правильно, я тут', 'Не, не нашли вы меня')
+    user_markup.add('Всё правильно, я тут')
+    user_markup.add('Не, не нашли вы меня')
     return user_markup
 
 

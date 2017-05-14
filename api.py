@@ -51,6 +51,13 @@ def add_to_cart(client, delivery, menu_name):
     return r.json()['count']
 
 
+def clear_cart(client):
+    data = {'whole': True}
+    jdata = json.dumps(data, ensure_ascii=False)
+    r = requests.delete(config.baseURL + 'cart/' + client, json=jdata)
+    return r
+
+
 def get_cart(client):
     r = requests.get(config.baseURL + 'cart/' + client)
     return r.json()
@@ -69,11 +76,24 @@ def post_address(chatID, client):
     data['latitude'] = User[chatID].latitude
     data['additional_info'] = User[chatID].address_info
     jdata = json.dumps(data, ensure_ascii=False)
-    print(jdata)
     r = requests.post(config.baseURL + 'clients', json=jdata)
     return r
 
 
 def proceed_checkout(client):
     r = requests.post(config.baseURL + 'orders/' + client)
-    return r.json()['order_number']
+    return r.json()
+
+
+def check_if_staff(username, chatID):
+    data = {'chatID': chatID}
+    jdata = json.dumps(data, ensure_ascii=False)
+    r = requests.put(config.baseURL + 'staff/' + username, json=jdata)
+    return r
+
+
+def update_order(number, who):
+    data = {'from': who}
+    jdata = json.dumps(data, ensure_ascii=False)
+    r = requests.put(config.baseURL + 'orders/' + number, json=jdata)
+    return r.json()
